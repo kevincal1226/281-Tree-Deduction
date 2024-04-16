@@ -1,0 +1,125 @@
+:root {
+    --background-color: var(--grey);
+    --primary-container: var(--mid-grey);
+    --on-primary-container: var(--off-white);
+    --primary: #1890ff;
+    --primary-darker: #096dd9;
+    --off-white: #EFEFEF;
+    --off-white-lighter: #f2f2f2;
+    --grey: #464646;
+    --mid-grey: #383838;
+    --dark-grey: #262626;
+    --red: #ff2f2f;
+    --green: #26b83e;
+    color-scheme: dark;
+    color: var(--off-white);
+}
+
+.light-mode {
+    background-color: var(--off-white);
+    --primary-container: var(--off-white-lighter);
+    --on-primary-container: var(--dark-grey);
+    color-scheme: light;
+    color: var(--dark-grey);
+}
+
+#toggleBtn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    cursor: pointer;
+    background-color: transparent;
+    width: 50px;
+    height: 50px;
+    border: none;
+    padding: 0;
+}
+
+#toggleBtn img {
+    width: 100%;
+    height: 100%;
+    border-radius: 100%;
+}
+
+#toggleBtn:hover img {
+    background-color: #EAD60A;
+    border-radius: 50%;
+}
+
+body {
+    transition: background-color 0.2s ease;
+    margin: 0;
+    padding: 0px;
+    font-family: Arial, sans-serif;
+}
+
+h1 {
+    font-size: 40px;
+    margin-bottom: 30px;
+}
+
+h2 {
+    font-size: 30px;
+    margin-bottom: 30px;
+}
+
+.button-container {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+button {
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    background-color: var(--primary);
+    color: #fff;
+    cursor: pointer;
+    transition: background-color 200ms;
+    font-size: 20px;
+}
+
+button:hover {
+    background-color: var(--primary-darker);
+}
+
+#quiz-container {
+    padding: 20px;
+}
+
+#main-window {
+    vertical-align: middle;
+    background-color: var(--primary-container);
+    border-radius: 8px;
+    margin: 10px;
+    padding: 25px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    overflow-x: hidden;
+    transition: all 100ms ease-out;
+    color: var(--on-primary-container);
+}
+
+#stats-window {
+    width: 30%;
+    vertical-align: middle;
+    background-color: var(--primary-container);
+    border-radius: 8px;
+    margin: auto;
+    margin-top: 20px;
+    padding: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    overflow-x: hidden;
+    transition: all 100ms ease-out;
+    color: var(--on-primary-container);
+}
+
+#contact {
+    font-size: 14px;
+    text-align: center;
+    position: absolute;
+    right: 10px;
+    bottom: 0px;
+}
