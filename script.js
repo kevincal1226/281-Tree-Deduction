@@ -160,7 +160,6 @@ function checkAnswer() {
     ++numQuestions;
     let userAnswer = document.getElementById('user-input').value.trim();
     userAnswer = userAnswer.replace(/ |[\[{()}\]]/g, "");
-    console.log(userAnswer);
     userAnswer = userAnswer.replace()
     if (JSON.stringify(userAnswer) === JSON.stringify(randomInt === 1 ? preList.join(',') : postList.join(','))) {
         document.getElementById('answer-container').style.display = "block";
