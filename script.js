@@ -134,14 +134,14 @@ class BinaryTree {
 
             let targetIndex = i + dir;
             if (targetIndex >= 0 && targetIndex < points.length && points[targetIndex].pos.depth === d - 1) {
-                buffer[2 * i + (dir > 0 ? 2 : 0)][d * 2 - 1] = dir > 0 ? '/' : '\\';
+                buffer[2 * i + (dir > 0 ? 2 : 0)][d * 2 - 1] = dir > 0 ? '/ ' : '\\ ';
             } else {
                 const start = 2 * i + (dir > 0 ? 2 : -1);
-                buffer[start][d * 2 - 1] = dir > 0 ? '/' : '\\';
-                buffer[start + dir][d * 2 - 2] = '-';
+                buffer[start][d * 2 - 1] = dir > 0 ? '/ ' : '\\ ';
+                buffer[start + dir][d * 2 - 2] = '.';
                 for (let j = i + 2 * dir; points[j] && points[j].pos.depth !== d - 1; j += dir) {
-                    buffer[2 * j][d * 2 - 2] = '-';
-                    buffer[2 * j + 1][d * 2 - 2] = '-';
+                    buffer[2 * j][d * 2 - 2] = '.';
+                    buffer[2 * j + 1][d * 2 - 2] = '.';
                 }
             }
         });
