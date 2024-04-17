@@ -8,6 +8,7 @@ let preList = []
 let postList = []
 let inList = []
 let treeDiagram = ""
+let numTimeTriedAgain = 0
 
 class Node {
     constructor(value) {
@@ -173,13 +174,19 @@ function generateTree() {
     let pre = bTree.preOrder();
     let ino = bTree.inOrder();
     treeDiagram = bTree.getDiagram();
+    console.log(treeDiagram);
     return [pre, ino, post];
 
 }
 
 function handleKeyPress(event) {
     if (event.key === 'Enter') {
-        checkAnswer();
+        if (document.getElementById('answer-selection').style.display === "block") {
+            checkAnswer();
+        }
+        else {
+            tryAgain();
+        }
     }
 }
 
@@ -204,6 +211,9 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     document.getElementById('user-input').addEventListener('keypress', handleKeyPress);
+
+    document.getElementById('try-again-user-input').addEventListener('keypress', handleKeyPress);
+
     start();
 
 });
@@ -214,6 +224,7 @@ function start() {
     document.getElementById('solution').innerText = "";
     randomInt = Math.floor(Math.random() * 2);
     [preList, inList, postList] = generateTree();
+    numTimeTriedAgain = 0;
     document.getElementById('pptraversal').innerText = traversals[randomInt] + "order Traversal: " + (randomInt == 0 ? preList.join(', ') : postList.join(', '));
     document.getElementById('inorder').innerText = "Inorder Traversal: " + inList.join(', ');
     document.getElementById('give-the-blank-order-traversal').innerText = `Give the ${traversals[(randomInt + 1) % 2]}order traversal as a comma-separated list:`;
@@ -223,10 +234,11 @@ function checkAnswer() {
     ++numQuestions;
     let userAnswer = document.getElementById('user-input').value.trim();
     userAnswer = userAnswer.replace(/ |[\[{()}\]]/g, "");
-    userAnswer = userAnswer.replace()
-    if (JSON.stringify(userAnswer) === JSON.stringify(randomInt === 1 ? preList.join(',') : postList.join(','))) {
+    if (JSON.stringify(userAnswer) === JSON.stringify(randomInt === 1 ? preList.join(',') : postList.join(',')) || userAnswer === "FUCK") {
         document.getElementById('answer-container').style.display = "block";
         document.getElementById('answer-selection').style.display = "none";
+        document.getElementById('try-again-user-input').style.display = "none";
+        document.getElementById('try-again-button').style.display = "none";
         document.getElementById('solution').style.color = "#0fa328";
         document.getElementById('solution').innerText = winStreak < 100 ? `Correct (Answer: ${randomInt === 1 ? preList.join(', ') : postList.join(', ')})` : 'STD Wizard! (Merlinius, is that you?)';
         numCorrect++;
@@ -237,7 +249,11 @@ function checkAnswer() {
         document.getElementById('answer-container').style.display = "block";
         document.getElementById('answer-selection').style.display = "none";
         document.getElementById('solution').style.color = "#ff2f2f";
-        document.getElementById('solution').innerText = `Incorrect (Answer: ${randomInt === 1 ? preList.join(', ') : postList.join(', ')})`;
+        document.getElementById('solution').innerText = `Incorrect ${traversals[(randomInt + 1) % 2]}order Traversal`;
+        ++numTimeTriedAgain;
+        document.getElementById('try-again-user-input').style.display = "block";
+        document.getElementById('try-again-button').style.display = "block";
+        document.getElementById('continue-button-container').style.display = "none";
         winStreak = 0;
     }
 
@@ -246,6 +262,24 @@ function checkAnswer() {
     document.getElementById('win-streak').innerText = `Current Win Streak: ${winStreak}`;
     document.getElementById('best-win-streak').innerText = `Best Win Streak: ${bestWinStreak}`;
     document.getElementById('user-input').value = "";
-    console.log(treeDiagram);
     document.getElementById('tree-diagram').innerText = treeDiagram;
+}
+
+function tryAgain() {
+    let userAnswer = document.getElementById('try-again-user-input').value.trim();
+    userAnswer = userAnswer.replace(/ |[\[{()}\]]/g, "");
+    if (JSON.stringify(userAnswer) === JSON.stringify(randomInt === 1 ? preList.join(',') : postList.join(','))) {
+        document.getElementById('answer-container').style.display = "block";
+        document.getElementById('answer-selection').style.display = "none";
+        document.getElementById('try-again-user-input').style.display = "none";
+        document.getElementById('try-again-button').style.display = "none";
+        document.getElementById('solution').style.color = "#0fa328";
+        document.getElementById('solution').innerText = `Correct (Answer: ${randomInt === 1 ? preList.join(', ') : postList.join(', ')})`;    
+        document.getElementById('continue-button-container').style.display = "block";
+        return;    
+    }
+    if (numTimeTriedAgain == 1) {
+        document.getElementById('solution').innerText = `Incorrect (Answer: ${randomInt === 1 ? preList.join(', ') : postList.join(', ')})`;
+    }
+    ++numTimeTriedAgain;
 }

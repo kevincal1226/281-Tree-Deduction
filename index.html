@@ -22,14 +22,20 @@
                 <h2 id="give-the-blank-order-traversal">Give the Postorder traversal as a comma-separated list</h2>
                 <div class="flex-row">
                     <input type="text" id="user-input" placeholder="Your answer" autocomplete="off" size="40">
-                    <button onclick="checkAnswer()">Submit</button>
+                    <button id="button" onclick="checkAnswer()">Submit</button>
                 </div>
             </div>
             <div id="answer-container">
-                <h2 id="solution" style="color:green">E</h2>
+                <h2 id="solution" style="color:green"></h2>
                 <p>Tree Diagram:</p>
                 <p id="tree-diagram"></p>
-                <button id="continue-button">Continue</button>
+                <div class="flex-row">
+                    <input type="text" id="try-again-user-input" placeholder="Your answer" autocomplete="off" size="40">
+                    <button id="try-again-button" onclick="tryAgain()">Submit</button>                    
+                </div>
+                <div id="continue-button-container">
+                    <button id="continue-button">Continue</button>
+                </div>
             </div>
         </div>
     </main>
