@@ -175,12 +175,12 @@ function generateTree() {
     let ino = bTree.inOrder();
     treeDiagram = bTree.getDiagram();
     // console.log(treeDiagram);
-    if (randomInt === 1) {
-        console.log(pre.join(', '));
-    }
-    else {
-        console.log(post.join(', '));
-    }
+    // if (randomInt === 1) {
+    //     console.log(pre.join(', '));
+    // }
+    // else {
+    //     console.log(post.join(', '));
+    // }
     return [pre, ino, post];
 
 }
