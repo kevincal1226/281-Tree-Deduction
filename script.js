@@ -287,18 +287,18 @@ function tryAgain() {
         document.getElementById('try-again-user-input').style.display = "none";
         document.getElementById('try-again-button').style.display = "none";
         document.getElementById('solution').style.color = "#0fa328";
-        document.getElementById('solution').innerText = `Correct (Answer: ${randomInt === 1 ? preList.join(', ') : postList.join(', ')})`;   
+        document.getElementById('solution').innerText = `Correct (Answer: ${randomInt === 1 ? preList.join(', ') : postList.join(', ')})`;
         document.getElementById('continue-button-container').style.display = "block";
         document.getElementById('show-answer-container').style.display = "none";
         document.getElementById('show-tree-container').style.display = "none";
         showTreeDiagram();
-        return;    
+        return;
     }
     document.getElementById('try-again-user-input').value = "";
 }
 
 function showAnswer() {
-    document.getElementById('solution').innerText = `Answer: ${randomInt === 1 ? preList.join(', ') : postList.join(', ')}`;    
+    document.getElementById('solution').innerText = `Answer: ${randomInt === 1 ? preList.join(', ') : postList.join(', ')}`;
 }
 
 function showTreeDiagram() {
