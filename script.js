@@ -222,6 +222,7 @@ function start() {
     document.getElementById('answer-container').style.display = "none";
     document.getElementById('answer-selection').style.display = "block";
     document.getElementById('solution').innerText = "";
+    document.getElementById('try-again-user-input').value = "";
     randomInt = Math.floor(Math.random() * 2);
     [preList, inList, postList] = generateTree();
     numTimeTriedAgain = 0;
@@ -241,6 +242,7 @@ function checkAnswer() {
         document.getElementById('try-again-button').style.display = "none";
         document.getElementById('solution').style.color = "#0fa328";
         document.getElementById('solution').innerText = winStreak < 100 ? `Correct (Answer: ${randomInt === 1 ? preList.join(', ') : postList.join(', ')})` : 'STD Wizard! (Merlinius, is that you?)';
+        document.getElementById('show-answer-container').style.display = "none";
         numCorrect++;
         winStreak++;
         bestWinStreak = Math.max(winStreak, bestWinStreak);
@@ -254,6 +256,7 @@ function checkAnswer() {
         document.getElementById('try-again-user-input').style.display = "block";
         document.getElementById('try-again-button').style.display = "block";
         document.getElementById('continue-button-container').style.display = "none";
+        document.getElementById('show-answer-container').style.display = "block";
         winStreak = 0;
     }
 
@@ -274,13 +277,14 @@ function tryAgain() {
         document.getElementById('try-again-user-input').style.display = "none";
         document.getElementById('try-again-button').style.display = "none";
         document.getElementById('solution').style.color = "#0fa328";
-        document.getElementById('solution').innerText = `Correct (Answer: ${randomInt === 1 ? preList.join(', ') : postList.join(', ')})`;    
+        document.getElementById('solution').innerText = `Correct (Answer: ${randomInt === 1 ? preList.join(', ') : postList.join(', ')})`;   
         document.getElementById('continue-button-container').style.display = "block";
+        document.getElementById('show-answer-container').style.display = "none";
         return;    
     }
-    if (numTimeTriedAgain == 1) {
-        document.getElementById('solution').innerText = `Incorrect (Answer: ${randomInt === 1 ? preList.join(', ') : postList.join(', ')})`;
-    }
     document.getElementById('try-again-user-input').value = "";
-    ++numTimeTriedAgain;
+}
+
+function showAnswer() {
+    document.getElementById('solution').innerText = `Answer: ${randomInt === 1 ? preList.join(', ') : postList.join(', ')}`;    
 }
