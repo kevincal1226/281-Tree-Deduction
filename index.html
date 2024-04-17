@@ -27,11 +27,14 @@
             </div>
             <div id="answer-container">
                 <h2 id="solution" style="color:green"></h2>
-                <p>Tree Diagram:</p>
+                <p id="tree-diagram-header">Tree Diagram:</p>
                 <p id="tree-diagram"></p>
                 <div class="flex-row">
                     <input type="text" id="try-again-user-input" placeholder="Your answer" autocomplete="off" size="40">
                     <button id="try-again-button" onclick="tryAgain()">Submit</button>                    
+                </div>
+                <div id="show-tree-container">
+                    <button id="show-tree" onclick="showTreeDiagram()">Show Tree</button>
                 </div>
                 <div id="show-answer-container">
                     <button id="show-answer" onclick="showAnswer()">Show Answer</button>

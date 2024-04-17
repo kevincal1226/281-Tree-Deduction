@@ -136,3 +136,11 @@ button:hover {
 #tree-diagram {
     white-space: pre;
 }
+
+#show-tree-container {
+    padding: 10px;
+}
+
+#show-answer-container {
+    padding: 10px;
+}

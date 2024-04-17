@@ -175,6 +175,12 @@ function generateTree() {
     let ino = bTree.inOrder();
     treeDiagram = bTree.getDiagram();
     // console.log(treeDiagram);
+    if (randomInt === 1) {
+        console.log(pre.join(', '));
+    }
+    else {
+        console.log(post.join(', '));
+    }
     return [pre, ino, post];
 
 }
@@ -229,6 +235,7 @@ function start() {
     document.getElementById('pptraversal').innerText = traversals[randomInt] + "order Traversal: " + (randomInt == 0 ? preList.join(', ') : postList.join(', '));
     document.getElementById('inorder').innerText = "Inorder Traversal: " + inList.join(', ');
     document.getElementById('give-the-blank-order-traversal').innerText = `Give the ${traversals[(randomInt + 1) % 2]}order traversal as a comma-separated list:`;
+    document.getElementById('tree-diagram').innerText = "";
 }
 
 function checkAnswer() {
@@ -242,7 +249,9 @@ function checkAnswer() {
         document.getElementById('try-again-button').style.display = "none";
         document.getElementById('solution').style.color = "#0fa328";
         document.getElementById('solution').innerText = winStreak < 100 ? `Correct (Answer: ${randomInt === 1 ? preList.join(', ') : postList.join(', ')})` : 'STD Wizard! (Merlinius, is that you?)';
+        document.getElementById('tree-diagram').innerText = treeDiagram;
         document.getElementById('show-answer-container').style.display = "none";
+        document.getElementById('show-tree-container').style.display = "none";
         numCorrect++;
         winStreak++;
         bestWinStreak = Math.max(winStreak, bestWinStreak);
@@ -257,6 +266,8 @@ function checkAnswer() {
         document.getElementById('try-again-button').style.display = "block";
         document.getElementById('continue-button-container').style.display = "none";
         document.getElementById('show-answer-container').style.display = "block";
+        document.getElementById('show-tree-container').style.display = "block";
+        document.getElementById('tree-diagram-header').style.display = "none";
         winStreak = 0;
     }
 
@@ -265,7 +276,6 @@ function checkAnswer() {
     document.getElementById('win-streak').innerText = `Current Win Streak: ${winStreak}`;
     document.getElementById('best-win-streak').innerText = `Best Win Streak: ${bestWinStreak}`;
     document.getElementById('user-input').value = "";
-    document.getElementById('tree-diagram').innerText = treeDiagram;
 }
 
 function tryAgain() {
@@ -280,6 +290,8 @@ function tryAgain() {
         document.getElementById('solution').innerText = `Correct (Answer: ${randomInt === 1 ? preList.join(', ') : postList.join(', ')})`;   
         document.getElementById('continue-button-container').style.display = "block";
         document.getElementById('show-answer-container').style.display = "none";
+        document.getElementById('show-tree-container').style.display = "none";
+        showTreeDiagram();
         return;    
     }
     document.getElementById('try-again-user-input').value = "";
@@ -287,4 +299,9 @@ function tryAgain() {
 
 function showAnswer() {
     document.getElementById('solution').innerText = `Answer: ${randomInt === 1 ? preList.join(', ') : postList.join(', ')}`;    
+}
+
+function showTreeDiagram() {
+    document.getElementById('tree-diagram-header').style.display = "block";
+    document.getElementById('tree-diagram').innerText = treeDiagram;
 }
