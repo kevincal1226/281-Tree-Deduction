@@ -281,5 +281,6 @@ function tryAgain() {
     if (numTimeTriedAgain == 1) {
         document.getElementById('solution').innerText = `Incorrect (Answer: ${randomInt === 1 ? preList.join(', ') : postList.join(', ')})`;
     }
+    document.getElementById('try-again-user-input').value = "";
     ++numTimeTriedAgain;
 }
