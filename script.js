@@ -174,7 +174,7 @@ function generateTree() {
     let pre = bTree.preOrder();
     let ino = bTree.inOrder();
     treeDiagram = bTree.getDiagram();
-    console.log(treeDiagram);
+    // console.log(treeDiagram);
     return [pre, ino, post];
 
 }
