@@ -6,7 +6,119 @@ let winStreak = 0
 let bestWinStreak = 0
 let numQuestions = 0
 let numCorrect = 0
-let sortsNames = ['Min Bubble Sort', 'Max Bubble Sort', 'Selection Sort', 'Insertion Sort', 'Merge Sort', 'Quicksort'];
+let traversals = ["Pre", "Post"]
+let preList = []
+let postList = []
+let inList = []
+
+class Node {
+    constructor(value) {
+        this.value = value;
+        this.left = null;
+        this.right = null;
+    }
+}
+
+class BinaryTree {
+    constructor() {
+        this.root = null;
+    }
+
+    insert(value) {
+        var newNode = new Node(value);
+        if(this.root === null){
+            this.root = newNode;
+            return this;
+        }
+
+        let current = this.root;
+        while(current){
+            if (Math.floor(Math.random() * 2) === 0) {
+                if (current.left === null) {
+                    current.left = newNode;
+                    return this;
+                }
+                current = current.left;
+            } else {
+                if (current.right === null) {
+                    current.right = newNode;
+                    return this;
+                } 
+                current = current.right;
+            }
+        }
+    }
+
+    preOrderHelper(list, curr) {
+        if (curr === null) {
+            return;
+        }
+        list.push(curr.value);
+        this.preOrderHelper(list, curr.left);
+        this.preOrderHelper(list, curr.right);
+    }
+
+    postOrderHelper(list, curr) {
+        if (curr === null) {
+            return;
+        }
+        this.postOrderHelper(list, curr.left);
+        this.postOrderHelper(list, curr.right);
+        list.push(curr.value);
+    }
+
+    inOrderHelper(list, curr) {
+        if (curr === null) {
+            return;
+        }
+        this.inOrderHelper(list, curr.left);
+        list.push(curr.value);
+        this.inOrderHelper(list, curr.right);
+    }
+
+    preOrder() {
+        let preOrder = [];
+        this.preOrderHelper(preOrder, this.root);
+        return preOrder;
+    }
+
+    postOrder() {
+        let postOrder = [];
+        this.postOrderHelper(postOrder, this.root);
+        return postOrder;
+    }
+
+    inOrder() {
+        let inOrder = [];
+        this.inOrderHelper(inOrder, this.root);
+        return inOrder;
+    }
+    
+}
+
+function generateTree() {
+    let bTree = new BinaryTree();
+    let l = [];
+    for (let i = 0; i < 8; ++i) {
+        let val = Math.floor(Math.random() * 100);
+        while (l.includes(val)) {
+            val = Math.floor(Math.random() * 100);
+        }
+        l.push(val);
+    }
+    l.forEach((elem) => bTree.insert(elem));
+    let post = bTree.postOrder();
+    let pre = bTree.preOrder();
+    let ino = bTree.inOrder();
+    return [pre, ino, post];
+
+}
+
+function handleKeyPress(event) {
+    if (event.key === 'Enter') {
+        checkAnswer();
+    }
+}
 
 document.addEventListener("DOMContentLoaded", () => {
     document.getElementById('total-questions').innerText = `Questions Attempted: ${numQuestions}`;
@@ -24,30 +136,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
     });
 
-    document.getElementById('bubble-sort').addEventListener('click', () => {
-        verifySort([0, 1]);
-    });
-    document.getElementById('selection-sort').addEventListener('click', () => {
-        verifySort([2]);
-
-    });
-    document.getElementById('insertion-sort').addEventListener('click', () => {
-        verifySort([3]);
-
-    });
-    document.getElementById('merge-sort').addEventListener('click', () => {
-        verifySort([4]);
-
-    });
-    document.getElementById('quick-sort').addEventListener('click', () => {
-        verifySort([5]);
-
-    });
-
     document.getElementById('continue-button').addEventListener('click', () => {
         start();
     });
 
+    document.getElementById('user-input').addEventListener('keypress', handleKeyPress);
     start();
 
 });
@@ -56,246 +149,48 @@ function start() {
     document.getElementById('answer-container').style.display = "none";
     document.getElementById('answer-selection').style.display = "block";
     document.getElementById('solution').innerText = "";
-    numIterations = Math.floor(Math.random() * (6 - 3) + 3)
-    input = []
-    randomInt = Math.floor(Math.random() * 6);
-    for (let i = 0; i < 12; i++) {
-        x = Math.floor(Math.random() * 100);
-        input.push(x);
-    }
-    startArr = [...input];
-    if (randomInt === 0) {
-        minBubble();
-    }
-    else if (randomInt === 1) {
-        maxBubble();
-    }
-    else if (randomInt === 2) {
-        selection();
-    }
-    else if (randomInt === 3) {
-        insertion();
-    }
-    else if (randomInt === 4) {
-        merge();
-    }
-    else if (randomInt === 5) {
-        quick();
+    randomInt = Math.floor(Math.random() * 2);
+    [preList, inList, postList] = generateTree();
+    document.getElementById('pptraversal').innerText = traversals[randomInt] + "order Traversal: " + (randomInt == 0 ? preList.join(', ') : postList.join(', '));
+    document.getElementById('inorder').innerText = "Inorder Traversal: " + inList.join(', ');
+    document.getElementById('give-the-blank-order-traversal').innerText = `Give the ${traversals[(randomInt + 1) % 2]}order traversal as a comma-separated list:`;
+}
+
+function checkAnswer() {
+    ++numQuestions;
+    let userAnswer = document.getElementById('user-input').value.trim();
+    userAnswer = userAnswer.replace(/ |[\[{()}\]]/g, "");
+    console.log(userAnswer);
+    userAnswer = userAnswer.replace()
+    if (JSON.stringify(userAnswer) === JSON.stringify(randomInt === 1 ? preList.join(',') : postList.join(','))) {
+        document.getElementById('answer-container').style.display = "block";
+        document.getElementById('answer-selection').style.display = "none";
+        document.getElementById('solution').style.color = "#0fa328";
+        document.getElementById('solution').innerText = winStreak < 100 ? `Correct (Answer: ${randomInt === 1 ? preList.join(', ') : postList.join(', ')})` : 'STD Wizard! (Merlinius, is that you?)';
+        numCorrect++;
+        winStreak++;
+        bestWinStreak = Math.max(winStreak, bestWinStreak);
     }
     else {
-        console.error("Random Integer not generated properly.");
+        document.getElementById('answer-container').style.display = "block";
+        document.getElementById('answer-selection').style.display = "none";
+        document.getElementById('solution').style.color = "#ff2f2f";
+        document.getElementById('solution').innerText = `Incorrect (Answer: ${randomInt === 1 ? preList.join(', ') : postList.join(', ')})`;
+        winStreak = 0;        
     }
-    document.getElementById('initial').innerText = "Start Array: [" + startArr.join(', ') + "]";
-    document.getElementById('end').innerText = "End Array: [" + input.join(", ") + "]";
-}
 
-function minBubble(verify = false) {
-    for (let i = 0; i < numIterations; i++) {
-        for (let j = input.length - 1; j > i; j--) {
-            if (input[j] < input[j - 1]) {
-                const temp = input[j];
-                input[j] = input[j - 1];
-                input[j - 1] = temp;
-                if (verify && JSON.stringify(input) === JSON.stringify(startArr)) {
-                    return true;
-                }
-            }
-        }
-    }
-    return false;
-}
-
-function maxBubble(verify = false) {
-    for (let i = 0; i < numIterations; i++) {
-        for (let j = 0; j < input.length; j++) {
-            if (input[j] > input[j + 1]) {
-                const temp = input[j];
-                input[j] = input[j + 1];
-                input[j + 1] = temp;
-                if (verify && JSON.stringify(input) === JSON.stringify(startArr)) {
-                    return true;
-                }
-            }
-        }
-    }
-    return false;
-}
-
-function selection(verify = false) {
-    for (let i = 0; i < numIterations; i++) {
-        let minIndex = i;
-        for (let j = i + 1; j < input.length; ++j) {
-            if (input[j] < input[minIndex]) {
-                minIndex = j;
-            }
-        }
-        [input[minIndex], input[i]] = [input[i], input[minIndex]];
-        if (verify && JSON.stringify(input) === JSON.stringify(startArr)) {
-            return true;
-        }
-    }
-    return false;
-}
-
-function insertion(verify = false) {
-    for (let i = input.length - 1; i > 0; i--) {
-        if (input[i] < input[i - 1]) {
-            const temp = input[i];
-            input[i] = input[i - 1];
-            input[i - 1] = temp;
-            if (verify && JSON.stringify(input) === JSON.stringify(startArr)) {
-                return true;
-            }
-        }
-    }
-    for (let i = 2; i < numIterations + 2; i++) {
-        temp = input[i];
-        j = i;
-        while (temp < input[j - 1]) {
-            input[j] = input[j - 1];
-            j--;
-            if (verify && JSON.stringify(input) === JSON.stringify(startArr)) {
-                return true;
-            }
-        }
-        input[j] = temp;
-        if (verify && JSON.stringify(input) === JSON.stringify(startArr)) {
-            return true;
-        }
-    }
-    return false;
-}
-
-function merge(verify = false, groupSize = [5]) {
-    while (groupSize[0] === 5) {
-        groupSize[0] = Math.floor(Math.random() * (7 - 2) + 2);
-    }
-    for (let j = 0; j < groupSize.length; ++j) {
-        for (let i = 0; i < input.length; i += groupSize[j]) {
-            const left = input.slice(0, i);
-            const sorted = (input.slice(i, i + groupSize[j])).sort(function (a, b) {
-                if (a < b) {
-                    return -1;
-                }
-                if (a > b) {
-                    return 1;
-                }
-                return 0;
-            });
-            const right = input.slice(i + groupSize[j]);
-            input = left.concat(sorted).concat(right);
-            if (verify && JSON.stringify(input) === JSON.stringify(startArr)) {
-                return true;
-            }
-        }
-    }
-    return false;
-}
-
-function partition(left, right) {
-    let pivot = --right;
-    while (true) {
-        while (input[left] < input[pivot]) {
-            ++left;
-        }
-        while (left < right && input[right - 1] >= input[pivot]) {
-            --right;
-        }
-        if (left >= right) {
-            break;
-        }
-        let temp = input[left];
-        input[left] = input[right - 1];
-        input[right - 1] = temp;
-    }
-    let temp = input[pivot];
-    input[pivot] = input[left];
-    input[left] = temp;
-    return left;
-}
-
-function iterativeQuickSort() {
-    const stack = [];
-    stack.push(0);
-    stack.push(input.length - 1);
-
-    while (stack.length > 0) {
-        const high = stack.pop();
-        const low = stack.pop();
-
-        const p = partition(low, high + 1);
-
-        if (p - 1 > low) {
-            stack.push(low);
-            stack.push(p - 1);
-        }
-
-        if (p + 1 < high) {
-            stack.push(p + 1);
-            stack.push(high);
-        }
-
-        if (JSON.stringify(input) === JSON.stringify(startArr)) {
-            return true;
-        }
-    }
-    return false;
-}
-
-function quick(left = 0, right = input.length, currIterations = Math.floor(Math.random() * 2)) {
-    if (left == right) {
-        return;
-    }
-    if (currIterations < 2) {
-        ++currIterations;
-        let pivot = partition(left, right);
-        if (pivot - left < input.length - pivot) {
-            quick(left, pivot, currIterations);
-            quick(pivot + 1, right, currIterations);
-        }
-        else {
-            quick(pivot + 1, right, currIterations);
-            quick(left, pivot, currIterations);
-        }
-    }
-}
-
-function userAnswerWorks(type) {
-    [startArr, input] = [input, startArr];
-    let maxBubbleTemp = [...input];
-    numIterations = input.length;
-    if (type === 0) {
-        if (minBubble(true)) {
-            correctAnswer(0);
-            return true;
-        }
-        input = [...maxBubbleTemp];
-        if (maxBubble(true)) {
-            correctAnswer(1);
-            return true;
-        }
-    }
-    else if (type === 2) {
-        return selection(true);
-    }
-    else if (type === 3) {
-        numIterations = input.length - 2; //have a loop that goes until i < numIterations - 2
-        return insertion(true);
-    }
-    else if (type === 4) {
-        return merge(true);
-    }
-    else if (type === 5) {
-        return iterativeQuickSort();
-    }
-    return false;
+    document.getElementById('total-questions').innerText = `Questions Attempted: ${numQuestions}`;
+    document.getElementById('accuracy').innerText = `Accuracy: ${(parseFloat(numCorrect) / parseFloat(numQuestions) * 100).toFixed(2)}%`;
+    document.getElementById('win-streak').innerText = `Current Win Streak: ${winStreak}`;
+    document.getElementById('best-win-streak').innerText = `Best Win Streak: ${bestWinStreak}`;
+    document.getElementById('user-input').value = "";
 }
 
 function correctAnswer(typeIdx) {
     document.getElementById('answer-container').style.display = "block";
     document.getElementById('answer-selection').style.display = "none";
     document.getElementById('solution').style.color = "#0fa328";
-    document.getElementById('solution').innerText = winStreak < 100 ? `Correct (Answer: ${sortsNames[typeIdx]})` : 'STD Wizard! (Merlinius, is that you?)';
+    document.getElementById('solution').innerText = winStreak < 100 ? `Correct` : 'STD Wizard! (Merlinius, is that you?)';
     numCorrect++;
     winStreak++;
     bestWinStreak = Math.max(winStreak, bestWinStreak);
