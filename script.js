@@ -130,7 +130,7 @@ class BinaryTree {
             const d = point.pos.depth;
             const dir = point.pos.parentDir;
             if (dir === 0) {
-                return; // root has no parent edge
+                return;
             }
 
             let targetIndex = i + dir;
