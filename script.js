@@ -8,7 +8,6 @@ let preList = []
 let postList = []
 let inList = []
 let treeDiagram = ""
-let numTimeTriedAgain = 0
 
 class Node {
     constructor(value) {
@@ -136,7 +135,8 @@ class BinaryTree {
             let targetIndex = i + dir;
             if (targetIndex >= 0 && targetIndex < points.length && points[targetIndex].pos.depth === d - 1) {
                 buffer[2 * i + (dir > 0 ? 2 : 0)][d * 2 - 1] = dir > 0 ? '/ ' : '\\ ';
-            } else {
+            }
+            else {
                 const start = 2 * i + (dir > 0 ? 2 : -1);
                 buffer[start][d * 2 - 1] = dir > 0 ? '/ ' : '\\ ';
                 buffer[start + dir][d * 2 - 2] = '.';
@@ -231,7 +231,6 @@ function start() {
     document.getElementById('try-again-user-input').value = "";
     randomInt = Math.floor(Math.random() * 2);
     [preList, inList, postList] = generateTree();
-    numTimeTriedAgain = 0;
     document.getElementById('pptraversal').innerText = traversals[randomInt] + "order Traversal: " + (randomInt == 0 ? preList.join(', ') : postList.join(', '));
     document.getElementById('inorder').innerText = "Inorder Traversal: " + inList.join(', ');
     document.getElementById('give-the-blank-order-traversal').innerText = `Give the ${traversals[(randomInt + 1) % 2]}order traversal as a comma-separated list:`;
@@ -261,7 +260,6 @@ function checkAnswer() {
         document.getElementById('answer-selection').style.display = "none";
         document.getElementById('solution').style.color = "#ff2f2f";
         document.getElementById('solution').innerText = `Incorrect ${traversals[(randomInt + 1) % 2]}order Traversal`;
-        ++numTimeTriedAgain;
         document.getElementById('try-again-user-input').style.display = "block";
         document.getElementById('try-again-button').style.display = "block";
         document.getElementById('continue-button-container').style.display = "none";
