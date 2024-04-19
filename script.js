@@ -237,10 +237,7 @@ function start() {
     document.getElementById('solution').innerText = "";
     document.getElementById('try-again-user-input').value = "";
     firstOrder = Math.floor(Math.random() * 4);
-    if (firstOrder <= 1) {
-        secondOrder = 2;
-    }
-    else if (firstOrder === 2) {
+    if (firstOrder === 2) {
         secondOrder = firstOrder;
         while (secondOrder === firstOrder) {
             secondOrder = Math.floor(Math.random() * 4);
