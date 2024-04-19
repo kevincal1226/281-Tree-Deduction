@@ -238,10 +238,16 @@ function start() {
     document.getElementById('try-again-user-input').value = "";
     firstOrder = Math.floor(Math.random() * 4);
     if (firstOrder <= 1) {
-        secondOrder = Math.floor((Math.random() * 2) + 2);
+        secondOrder = 2;
+    }
+    else if (firstOrder === 2) {
+        secondOrder = firstOrder;
+        while (secondOrder === firstOrder) {
+            secondOrder = Math.floor(Math.random() * 4);
+        }
     }
     else {
-        secondOrder = Math.floor(Math.random() * 2);
+        secondOrder = 2;
     }
     toGuess = secondOrder;
     while (toGuess === secondOrder || toGuess === firstOrder) {
