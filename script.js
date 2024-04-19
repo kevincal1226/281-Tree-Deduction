@@ -1,11 +1,11 @@
 let firstOrder = -1;
-let secondOrder = -1;
 let toGuess = -1;
 let winStreak = 0;
 let bestWinStreak = 0;
 let numQuestions = 0;
 let numCorrect = 0;
-let traversalNames = ["Pre", "Post", "In", "Level"];
+let traversalNames = ["Pre", "Post", "Level"];
+let inorderTraversal = [];
 let traversals = [];
 let treeDiagram = "";
 
@@ -189,7 +189,7 @@ function generateTree() {
     let ino = bTree.inOrder();
     let lev = bTree.levelOrder();
     treeDiagram = bTree.getDiagram();
-    return [pre, post, ino, lev];
+    return [[pre, post, lev], ino];
 }
 
 function handleKeyPress(event) {
@@ -236,23 +236,14 @@ function start() {
     document.getElementById('answer-selection').style.display = "block";
     document.getElementById('solution').innerText = "";
     document.getElementById('try-again-user-input').value = "";
-    firstOrder = Math.floor(Math.random() * 4);
-    if (firstOrder === 2) {
-        secondOrder = firstOrder;
-        while (secondOrder === firstOrder) {
-            secondOrder = Math.floor(Math.random() * 4);
-        }
+    firstOrder = Math.floor(Math.random() * 3);
+    toGuess = firstOrder;
+    while (toGuess === firstOrder) {
+        toGuess = Math.floor(Math.random() * 3);
     }
-    else {
-        secondOrder = 2;
-    }
-    toGuess = secondOrder;
-    while (toGuess === secondOrder || toGuess === firstOrder) {
-        toGuess = Math.floor(Math.random() * 4);
-    }
-    traversals = generateTree();
+    [traversals, inorderTraversal] = generateTree();
     document.getElementById('pptraversal').innerText = traversalNames[firstOrder] + "order Traversal: " + (traversals[firstOrder].join(', '));
-    document.getElementById('inorder').innerText = traversalNames[secondOrder] + "order Traversal: " + traversals[secondOrder].join(', ');
+    document.getElementById('inorder').innerText = "Inorder Traversal: " + inorderTraversal.join(', ');
     document.getElementById('give-the-blank-order-traversal').innerText = `Give the ${traversalNames[toGuess]}order traversal as a comma-separated list:`;
     document.getElementById('tree-diagram').innerText = "";
 }
