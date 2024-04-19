@@ -270,7 +270,7 @@ function checkAnswer() {
     ++numQuestions;
     let userAnswer = document.getElementById('user-input').value.trim();
     userAnswer = userAnswer.replace(/ |[\[{()}\]]/g, "");
-    if (JSON.stringify(userAnswer) === JSON.stringify(traversals[toGuess].join(',')) || userAnswer === "FUCK") {
+    if (JSON.stringify(userAnswer) === JSON.stringify(traversals[toGuess].join(','))) {
         document.getElementById('answer-container').style.display = "block";
         document.getElementById('answer-selection').style.display = "none";
         document.getElementById('try-again-user-input').style.display = "none";
