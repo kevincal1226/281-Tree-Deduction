@@ -1,16 +1,13 @@
-let firstOrder = -1
-let secondOrder = -1
-let toGuess = -1
-let winStreak = 0
-let bestWinStreak = 0
-let numQuestions = 0
-let numCorrect = 0
-let traversalNames = ["Pre", "Post", "In", "Level"]
-let traversals = []
-let preList = []
-let postList = []
-let inList = []
-let treeDiagram = ""
+let firstOrder = -1;
+let secondOrder = -1;
+let toGuess = -1;
+let winStreak = 0;
+let bestWinStreak = 0;
+let numQuestions = 0;
+let numCorrect = 0;
+let traversalNames = ["Pre", "Post", "In", "Level"];
+let traversals = [];
+let treeDiagram = "";
 
 class Node {
     constructor(value) {
@@ -191,15 +188,7 @@ function generateTree() {
     let pre = bTree.preOrder();
     let ino = bTree.inOrder();
     let lev = bTree.levelOrder();
-    console.log(lev);
     treeDiagram = bTree.getDiagram();
-    // console.log(treeDiagram);
-    // if (randomInt === 1) {
-    //     console.log(pre.join(', '));
-    // }
-    // else {
-    //     console.log(post.join(', '));
-    // }
     return [pre, post, ino, lev];
 }
 
@@ -259,7 +248,6 @@ function start() {
         toGuess = Math.floor(Math.random() * 4);
     }
     traversals = generateTree();
-    console.log(traversals[toGuess].join(', '));
     document.getElementById('pptraversal').innerText = traversalNames[firstOrder] + "order Traversal: " + (traversals[firstOrder].join(', '));
     document.getElementById('inorder').innerText = traversalNames[secondOrder] + "order Traversal: " + traversals[secondOrder].join(', ');
     document.getElementById('give-the-blank-order-traversal').innerText = `Give the ${traversalNames[toGuess]}order traversal as a comma-separated list:`;
