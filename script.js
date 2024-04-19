@@ -1,9 +1,12 @@
-let randomInt = -1
+let firstOrder = -1
+let secondOrder = -1
+let toGuess = -1
 let winStreak = 0
 let bestWinStreak = 0
 let numQuestions = 0
 let numCorrect = 0
-let traversals = ["Pre", "Post"]
+let traversalNames = ["Pre", "Post", "In", "Level"]
+let traversals = []
 let preList = []
 let postList = []
 let inList = []
@@ -92,6 +95,20 @@ class BinaryTree {
         return inOrder;
     }
 
+    levelOrder() {
+        let levelOrder = [];
+        let q = [this.root];
+        for (let i = 0; i < q.length; ++i) {
+            if (q[i] === null) {
+                continue;
+            }
+            levelOrder.push(q[i].value);
+            q.push(q[i].left);
+            q.push(q[i].right);
+        }
+        return levelOrder;
+    }
+
     // This code was basically just used from the 281 lab 8 print_diagram() function for AVL Trees
     getDiagram() {
         const points = [];
@@ -173,6 +190,8 @@ function generateTree() {
     let post = bTree.postOrder();
     let pre = bTree.preOrder();
     let ino = bTree.inOrder();
+    let lev = bTree.levelOrder();
+    console.log(lev);
     treeDiagram = bTree.getDiagram();
     // console.log(treeDiagram);
     // if (randomInt === 1) {
@@ -181,8 +200,7 @@ function generateTree() {
     // else {
     //     console.log(post.join(', '));
     // }
-    return [pre, ino, post];
-
+    return [pre, post, ino, lev];
 }
 
 function handleKeyPress(event) {
@@ -229,11 +247,22 @@ function start() {
     document.getElementById('answer-selection').style.display = "block";
     document.getElementById('solution').innerText = "";
     document.getElementById('try-again-user-input').value = "";
-    randomInt = Math.floor(Math.random() * 2);
-    [preList, inList, postList] = generateTree();
-    document.getElementById('pptraversal').innerText = traversals[randomInt] + "order Traversal: " + (randomInt == 0 ? preList.join(', ') : postList.join(', '));
-    document.getElementById('inorder').innerText = "Inorder Traversal: " + inList.join(', ');
-    document.getElementById('give-the-blank-order-traversal').innerText = `Give the ${traversals[(randomInt + 1) % 2]}order traversal as a comma-separated list:`;
+    firstOrder = Math.floor(Math.random() * 4);
+    if (firstOrder <= 1) {
+        secondOrder = Math.floor((Math.random() * 2) + 2);
+    }
+    else {
+        secondOrder = Math.floor(Math.random() * 2);
+    }
+    toGuess = secondOrder;
+    while (toGuess === secondOrder || toGuess === firstOrder) {
+        toGuess = Math.floor(Math.random() * 4);
+    }
+    traversals = generateTree();
+    console.log(traversals[toGuess].join(', '));
+    document.getElementById('pptraversal').innerText = traversalNames[firstOrder] + "order Traversal: " + (traversals[firstOrder].join(', '));
+    document.getElementById('inorder').innerText = traversalNames[secondOrder] + "order Traversal: " + traversals[secondOrder].join(', ');
+    document.getElementById('give-the-blank-order-traversal').innerText = `Give the ${traversalNames[toGuess]}order traversal as a comma-separated list:`;
     document.getElementById('tree-diagram').innerText = "";
 }
 
@@ -241,13 +270,13 @@ function checkAnswer() {
     ++numQuestions;
     let userAnswer = document.getElementById('user-input').value.trim();
     userAnswer = userAnswer.replace(/ |[\[{()}\]]/g, "");
-    if (JSON.stringify(userAnswer) === JSON.stringify(randomInt === 1 ? preList.join(',') : postList.join(',')) || userAnswer === "FUCK") {
+    if (JSON.stringify(userAnswer) === JSON.stringify(traversals[toGuess].join(',')) || userAnswer === "FUCK") {
         document.getElementById('answer-container').style.display = "block";
         document.getElementById('answer-selection').style.display = "none";
         document.getElementById('try-again-user-input').style.display = "none";
         document.getElementById('try-again-button').style.display = "none";
         document.getElementById('solution').style.color = "#0fa328";
-        document.getElementById('solution').innerText = winStreak < 100 ? `Correct (Answer: ${randomInt === 1 ? preList.join(', ') : postList.join(', ')})` : 'STD Wizard! (Merlinius, is that you?)';
+        document.getElementById('solution').innerText = winStreak < 100 ? `Correct (Answer: ${traversals[toGuess].join(', ')})` : 'STD Wizard! (Merlinius, is that you?)';
         document.getElementById('tree-diagram').innerText = treeDiagram;
         document.getElementById('show-answer-container').style.display = "none";
         document.getElementById('show-tree-container').style.display = "none";
@@ -259,7 +288,7 @@ function checkAnswer() {
         document.getElementById('answer-container').style.display = "block";
         document.getElementById('answer-selection').style.display = "none";
         document.getElementById('solution').style.color = "#ff2f2f";
-        document.getElementById('solution').innerText = `Incorrect ${traversals[(randomInt + 1) % 2]}order Traversal`;
+        document.getElementById('solution').innerText = `Incorrect ${traversalNames[toGuess]}order Traversal`;
         document.getElementById('try-again-user-input').style.display = "block";
         document.getElementById('try-again-button').style.display = "block";
         document.getElementById('continue-button-container').style.display = "none";
@@ -279,13 +308,13 @@ function checkAnswer() {
 function tryAgain() {
     let userAnswer = document.getElementById('try-again-user-input').value.trim();
     userAnswer = userAnswer.replace(/ |[\[{()}\]]/g, "");
-    if (JSON.stringify(userAnswer) === JSON.stringify(randomInt === 1 ? preList.join(',') : postList.join(','))) {
+    if (JSON.stringify(userAnswer) === JSON.stringify(traversals[toGuess].join(','))) {
         document.getElementById('answer-container').style.display = "block";
         document.getElementById('answer-selection').style.display = "none";
         document.getElementById('try-again-user-input').style.display = "none";
         document.getElementById('try-again-button').style.display = "none";
         document.getElementById('solution').style.color = "#0fa328";
-        document.getElementById('solution').innerText = `Correct (Answer: ${randomInt === 1 ? preList.join(', ') : postList.join(', ')})`;
+        document.getElementById('solution').innerText = `Correct (Answer: ${traversals[toGuess].join(', ')})`;
         document.getElementById('continue-button-container').style.display = "block";
         document.getElementById('show-answer-container').style.display = "none";
         document.getElementById('show-tree-container').style.display = "none";
@@ -296,7 +325,7 @@ function tryAgain() {
 }
 
 function showAnswer() {
-    document.getElementById('solution').innerText = `Answer: ${randomInt === 1 ? preList.join(', ') : postList.join(', ')}`;
+    document.getElementById('solution').innerText = `Answer: ${traversals[toGuess].join(', ')}`;
 }
 
 function showTreeDiagram() {
